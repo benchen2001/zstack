@@ -1,0 +1,3 @@
+OBJECTS += $(REPO)/lld_armv7m/vector_table.o
+OBJECTS += $(REPO)/lld_armv7m/exception.o
+OBJECTS += $(REPO)/lld_armv7m/c_start.o
