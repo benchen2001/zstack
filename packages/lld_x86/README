@@ -1,0 +1,48 @@
+# x86 Core
+
+## Overview
+
+Almost all the x86 machine has BIOS, it detect the boot sector by the sequence of disk.
+
+The boot sector is a first 512 bytes in the disk, end with 0xAA55, where stores the user's first instruction.
+
+BIOS also degradate the current CPU to 8086 mode, and give the CPU control to user first instruction.
+
+BIOS move the first 512 bytes to 0x7C00, which is the start address of last 1KB:
+
+    ---------------------------
+    512B: for stack and data
+    ---------------------------
+    512B: for first sector
+    ---------------------------
+    ...
+    ---------------------------
+ 
+My wiki tells more and why.
+
+## Memory Layout
+
+    --------------------------- 0xFFFF,FFFF
+    OS Protected Mode Code
+    --------------------------- 0x0010,0000
+    ...
+    --------------------------- 0x0000,8000
+    Reserved
+    --------------------------- 0x0000,7E00
+    512B Boot Sector
+    --------------------------- 0x0000,7C00
+    Reserved
+    --------------------------- 0x0000,7000
+    48KB OS Real Mode Code
+    --------------------------- 0x0000,1000
+    BIOS
+    --------------------------- 0x0000,0000
+
+## ISR
+
+ISR module can support dynamic register function or predefined functions, I prefer the predefined ones.
+
+## Self Test
+
+    qemu-system-x86_64 boot.bin
+

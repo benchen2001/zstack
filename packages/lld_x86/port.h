@@ -1,0 +1,14 @@
+#ifndef PORT_H
+#define PORT_H
+
+#define SERIAL_PORT_BASE            0x03F8
+#define SERIAL_PORT_DR              (SERIAL_PORT_BASE + 0)
+#define SERIAL_PORT_DIV             (SERIAL_PORT_BASE + 1)
+#define SERIAL_PORT_INT             (SERIAL_PORT_BASE + 2)
+#define SERIAL_PORT_LINE_CTRL       (SERIAL_PORT_BASE + 3)
+#define SERIAL_PORT_MODEM           (SERIAL_PORT_BASE + 4)
+#define SERIAL_PORT_LINE_STATUS     (SERIAL_PORT_BASE + 5)
+#define SERIAL_PORT_MODEM_STATUS    (SERIAL_PORT_BASE + 6)
+#define SERIAL_PORT_SCRATCH         (SERIAL_PORT_BASE + 7)
+
+#endif

@@ -1,0 +1,46 @@
+# Require: PACKAGES FIRMWARES OUTDIR
+
+REPO = $(ZSTACK)/packages
+INCLUDE = $(REPO)/include
+
+CC = arm-none-eabi-gcc
+LD = @arm-none-eabi-ld
+OBJCOPY = @arm-none-eabi-objcopy
+OBJDUMP = @arm-none-eabi-objdump
+
+CFLAGS  = -c -mthumb -march=armv7-m -g -nostdinc -fno-builtin -Wall -I$(INCLUDE)
+LDFLAGS = -nostdlib -T $(REPO)/board/lm3s811evb/layout.lds
+
+OBJECTS := $(foreach directory, $(PACKAGES), $(directory)/built-in.o)
+
+all: zstack.bin
+
+zstack.bin: zstack.elf
+	$(OBJCOPY) -O binary zstack.elf $@
+	$(OBJDUMP) -t $< > zstack.symbols
+	$(OBJDUMP) -S $< > zstack.disassembly
+
+zstack.elf: $(OBJECTS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+# KEY NODE
+$(OBJECTS):	check-packages
+
+check-packages:
+	@$(foreach directory, $(PACKAGES), cd $(directory); make -f Makefile.inc; printf "\n";)
+
+clean:
+	@rm -f *.img *.bin *.elf zstack.*
+	@$(foreach directory, $(PACKAGES), cd $(directory); make clean -s -f Makefile.inc;)
+
+run: zstack.bin
+	@qemu-system-arm -machine lm3s811evb -kernel zstack.bin
+
+debug: zstack.bin zstack.elf
+	@qemu-system-arm -machine lm3s811evb zstack.bin -S -gdb tcp::9000
+	@arm-none-eabi-gdb zstack.elf
+
+export CC LD CFLAGS
+export REPO
+export OUTDIR
+

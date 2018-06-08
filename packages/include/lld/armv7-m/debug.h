@@ -1,0 +1,42 @@
+#ifndef ARMV7M_REGISTERS_DEBUG_H
+#define ARMV7M_REGISTERS_DEBUG_H
+
+struct ITM_t {
+};
+
+struct DWT_t {
+    VU32 CTRL;
+    VU32 CYCCNT;
+    VU32 CPICNT;
+    VU32 EXCCNT;
+    VU32 SLEEPCNT;
+    VU32 LSUCNT;
+    VU32 FOLDCNT;
+    VU32 PCSR;
+    VU32 COMP0;
+    VU32 MASK0;
+    VU32 FUNCTION0;
+    VU32 RESERVED0[1];
+    VU32 COMP1;
+    VU32 MASK1;
+    VU32 FUNCTION1;
+    VU32 RESERVED1[1];
+    VU32 COMP2;
+    VU32 MASK2;
+    VU32 FUNCTION2;
+    VU32 RESERVED2[1];
+    VU32 COMP3;
+    VU32 MASK3;
+    VU32 FUNCTION3;
+};
+
+struct FPB_t {
+};
+
+struct TPIU_t {
+};
+
+struct ETM_t {
+};
+
+#endif

@@ -1,0 +1,10 @@
+
+## Reference
+
+* https://pci-ids.ucw.cz/read/PC/8086/100e
+* https://pci-ids.ucw.cz/read/PC/8086/100e/1af41100
+* https://github.com/ceph/qemu-kvm/blob/master/hw/e1000.c
+* https://wiki.osdev.org/Intel_8254x
+* https://joscor.com/blog/intel-8254x-ethernet-controller-example-driver/
+* https://downloadcenter.intel.com/product/1285/intel-82540em-gigabit-ethernet-controller
+

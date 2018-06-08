@@ -1,0 +1,18 @@
+#ifndef CORE_EXCEPTION_H
+#define CORE_EXCEPTION_H
+
+#define CORE_EXCEPTION_RESET            0
+#define CORE_EXCEPTION_NMI              1
+#define CORE_EXCEPTION_HARD_FAULT       2
+#define CORE_EXCEPTION_MEM_MANAGE       3
+#define CORE_EXCEPTION_BUS_FAULT        4
+#define CORE_EXCEPTION_USAGE_FAULT      5
+#define CORE_EXCEPTION_RESERVED         6
+#define CORE_EXCEPTION_SVC              7
+#define CORE_EXCEPTION_DEBUG_MONITOR    8
+#define CORE_EXCEPTION_PENDSV           9
+#define CORE_EXCEPTION_SYSTICK          10
+#define CORE_EXCEPTION_PERIPH           11
+
+#endif
+

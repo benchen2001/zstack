@@ -1,0 +1,51 @@
+# Require: PACKAGES FIRMWARES OUTDIR
+
+REPO = $(ZSTACK)/packages
+INCLUDE = $(REPO)/include
+
+CC = gcc
+LD = @ld
+OBJCOPY = @objcopy
+OBJDUMP = @objdump
+
+CFLAGS  = -c -m32 -g -nostdinc -fno-builtin -Wall -I$(INCLUDE)
+LDFLAGS = -T $(REPO)/board/qemu-x86/layout.lds -nostdlib -melf_i386
+
+OBJECTS := $(foreach directory, $(PACKAGES), $(directory)/built-in.o)
+
+all: zstack.img
+
+zstack.img: zstack.bin bootsector.bin
+	@dd if=/dev/zero of=zstack.img bs=512 count=49
+	@dd if=bootsector.bin of=zstack.img bs=512 count=1 conv=notrunc
+	@dd if=zstack.bin of=zstack.img seek=1 bs=512 count=48 conv=notrunc
+
+zstack.bin: zstack.elf
+	$(OBJCOPY) -O binary zstack.elf $@
+
+zstack.elf: $(OBJECTS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+# KEY NODE START
+$(OBJECTS): check-packages
+bootsector.bin: check-firmwares
+# KEY NODE EDN
+
+check-packages:
+	@$(foreach directory, $(PACKAGES), cd $(directory); make -f Makefile.inc; printf "\n";)
+
+check-firmwares:
+	@$(foreach directory, $(FIRMWARES), cd $(directory); make -f Makefile; printf "\n";)
+
+clean:
+	@rm -f *.img *.bin *.elf
+	@$(foreach directory, $(PACKAGES), cd $(directory); make clean -s -f Makefile.inc;)
+	@$(foreach directory, $(FIRMWARES), cd $(directory); make clean -s -f Makefile;)
+
+run: zstack.img
+	@qemu-system-x86_64 -monitor stdio zstack.img
+
+export CC LD CFLAGS
+export REPO
+export OUTDIR
+

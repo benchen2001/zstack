@@ -1,0 +1,7 @@
+OBJECTS += $(REPO)/lld_x86/start.o
+OBJECTS += $(REPO)/lld_x86/c_start.o
+OBJECTS += $(REPO)/lld_x86/tss.o
+OBJECTS += $(REPO)/lld_x86/gdt.o
+OBJECTS += $(REPO)/lld_x86/idt.o
+OBJECTS += $(REPO)/lld_x86/bss.o
+OBJECTS += $(REPO)/lld_x86/exception.o

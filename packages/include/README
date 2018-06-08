@@ -1,0 +1,9 @@
+# Namespaces
+
+	./ Zstack, Common and Default Namespace
+	lld sub-namespace
+	hal sub-namespace
+	os  sub-namespace
+
+	cmsis cmsis namespace
+
