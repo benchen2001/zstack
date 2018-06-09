@@ -1,5 +1,7 @@
 REPO = /home/jinfeng/zstack/packages
 
+LINK_SCRIPT = $(REPO)/board_riscv_spike/layout.lds 
+
 include $(REPO)/lld_riscv/basic.list
 
 OBJECTS += main.o
@@ -11,12 +13,17 @@ OBJCOPY = riscv32-unknown-elf-objcopy
 OBJDUMP = riscv32-unknown-elf-objdump
 
 CFLAGS  = -c -g -nostdinc -fno-builtin -Wall -I$(REPO)/include
-LDFLAGS = -T $(REPO)/board_spike/layout.lds -nostdlib
+LDFLAGS = -nostdlib -T $(LINK_SCRIPT)
 #--------------------------------------------------------------------------------------------------
 
-all: zstack.elf
+all: zstack.img
 
-zstack.elf: $(OBJECTS)
+zstack.img: zstack.elf
+	$(OBJCOPY) -O binary zstack.elf zstack.bin
+	@dd if=/dev/zero of=zstack.img bs=512 count=48
+	@dd if=zstack.bin of=zstack.img bs=512 count=48 conv=notrunc
+
+zstack.elf: $(OBJECTS) $(LINK_SCRIPT)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
@@ -37,7 +44,7 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-i386 -monitor stdio zstack.img
+	@qemu-system-riscv32 -monitor stdio zstack.img
 
-copy:
+install:
 	cp zstack.img /mnt/c/Users/Z/
