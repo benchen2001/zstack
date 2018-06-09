@@ -50,5 +50,5 @@ clean:
 run:
 	@qemu-system-i386 -monitor stdio zstack.img
 
-copy:
+install:
 	cp zstack.img /mnt/c/Users/Z/

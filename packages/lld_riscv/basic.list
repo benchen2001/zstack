@@ -1,1 +1,2 @@
 OBJECTS += $(REPO)/lld_riscv/start.o
+OBJECTS += $(REPO)/lld_riscv/host.o

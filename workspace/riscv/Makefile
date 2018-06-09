@@ -3,16 +3,42 @@ REPO = /home/jinfeng/zstack/packages
 LINK_SCRIPT = $(REPO)/board_riscv_spike/layout.lds 
 
 include $(REPO)/lld_riscv/basic.list
+include $(REPO)/libmisc/basic.list
+include $(REPO)/libc/basic.list
 
 OBJECTS += main.o
 
 #--------------------------------------------------------------------------------------------------
-CC = riscv32-unknown-elf-gcc
-LD = riscv32-unknown-elf-ld
-OBJCOPY = riscv32-unknown-elf-objcopy
-OBJDUMP = riscv32-unknown-elf-objdump
+CC = riscv64-unknown-elf-gcc
+LD = riscv64-unknown-elf-ld
+OBJCOPY = riscv64-unknown-elf-objcopy
+OBJDUMP = riscv64-unknown-elf-objdump
 
-CFLAGS  = -c -g -nostdinc -fno-builtin -Wall -I$(REPO)/include
+WARNING = 			\
+	-Wall 			\
+	-Wextra			\
+	-Wshadow 		\
+	-Wpointer-arith		\
+	-Wbad-function-cast	\
+	-Wcast-align		\
+	-Wsign-compare		\
+	-Waggregate-return 	\
+	-Wstrict-prototypes 	\
+	-Wmissing-prototypes 	\
+	-Wmissing-declarations	\
+	-Wunused
+
+CFLAGS  =			\
+	-c -g			\
+	-nostdinc 		\
+	-fno-builtin 		\
+	$(WARNING) 		\
+	-I$(REPO)/include 	\
+	-fomit-frame-pointer 	\
+	-fno-strict-aliasing 	\
+	-mcmodel=medany 	\
+	-D__gracefulExit
+
 LDFLAGS = -nostdlib -T $(LINK_SCRIPT)
 #--------------------------------------------------------------------------------------------------
 
@@ -24,7 +50,9 @@ zstack.img: zstack.elf
 	@dd if=zstack.bin of=zstack.img bs=512 count=48 conv=notrunc
 
 zstack.elf: $(OBJECTS) $(LINK_SCRIPT)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $(OBJECTS)
+	$(OBJDUMP) -S zstack.elf > zstack.dump
+	$(OBJDUMP) -t zstack.elf > zstack.symbol
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
@@ -44,7 +72,7 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-riscv32 -monitor stdio zstack.img
+	spike zstack.elf
 
 install:
 	cp zstack.img /mnt/c/Users/Z/
