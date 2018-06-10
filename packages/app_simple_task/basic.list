@@ -1,0 +1,2 @@
+OBJECTS += $(REPO)/app_simple_task/main.o
+

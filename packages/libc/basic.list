@@ -1,2 +1,3 @@
 OBJECTS += $(REPO)/libc/vsprintf.o
 OBJECTS += $(REPO)/libc/strlen.o
+OBJECTS += $(REPO)/libc/mem.o

@@ -1,2 +1,4 @@
 OBJECTS += $(REPO)/lld_riscv/start.o
 OBJECTS += $(REPO)/lld_riscv/host.o
+OBJECTS += $(REPO)/lld_riscv/exception.o
+OBJECTS += $(REPO)/lld_riscv/irq.o

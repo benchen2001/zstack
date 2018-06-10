@@ -5,8 +5,8 @@ LINK_SCRIPT = $(REPO)/board_riscv_spike/layout.lds
 include $(REPO)/lld_riscv/basic.list
 include $(REPO)/libmisc/basic.list
 include $(REPO)/libc/basic.list
-
-OBJECTS += main.o
+include $(REPO)/os_light/basic.list
+include $(REPO)/app_simple_task/basic.list
 
 #--------------------------------------------------------------------------------------------------
 CC = riscv64-unknown-elf-gcc

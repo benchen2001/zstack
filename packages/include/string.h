@@ -3,4 +3,6 @@
 
 int strlen(const char *str);
 
+void memset (void *, unsigned char, int);
+
 #endif
