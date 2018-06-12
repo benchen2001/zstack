@@ -4,7 +4,7 @@
 static void Task0(void)
 {
 	while (1) {
-		printk("0");
+		printk("TASK0");
 		software_interrupt(0);
 	}
 }
@@ -12,7 +12,7 @@ static void Task0(void)
 static void Task1(void)
 {
 	while (1) {
-		printk("1");
+		printk("TASK1");
 		software_interrupt(0);
 	}
 }
@@ -20,14 +20,17 @@ static void Task1(void)
 static void Task2(void)
 {
 	while (1) {
-		printk("2");
+		printk("TASK2");
 		software_interrupt(0);
 	}
 }
 
 static void TaskIdle(void)
 {
-	while (1);
+	while (1) {
+		printk("TASK2");
+		software_interrupt(0);
+	}
 }
 
 struct task_config task_config_array[] = {
