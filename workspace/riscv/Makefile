@@ -37,7 +37,8 @@ CFLAGS  =			\
 	-fomit-frame-pointer 	\
 	-fno-strict-aliasing 	\
 	-mcmodel=medany 	\
-	-D__gracefulExit
+	-D__gracefulExit	\
+	-include config
 
 LDFLAGS = -nostdlib -T $(LINK_SCRIPT)
 #--------------------------------------------------------------------------------------------------

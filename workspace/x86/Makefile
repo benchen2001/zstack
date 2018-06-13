@@ -15,7 +15,7 @@ LD = ld
 OBJCOPY = objcopy
 OBJDUMP = objdump
 
-CFLAGS  = -c -m32 -g -nostdinc -fno-builtin -Wall -I$(REPO)/include
+CFLAGS  = -c -m32 -g -nostdinc -fno-builtin -Wall -I$(REPO)/include -include config
 LDFLAGS = -T $(REPO)/board_qemu_x86_64/layout.lds -nostdlib -melf_i386
 #--------------------------------------------------------------------------------------------------
 
