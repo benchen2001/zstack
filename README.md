@@ -1,6 +1,8 @@
 # ZStack
 
-The LLD symbols should a superset of CMSIS, for barebone usage.
+## Design
+
+* package export symbols, with different set, distinguish by postfix.
 
 ## Quick Start
 
