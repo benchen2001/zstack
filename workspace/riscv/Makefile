@@ -75,5 +75,14 @@ clean:
 run:
 	spike zstack.elf
 
+start_spike:
+	spike --rbb-port=9824 zstack.elf
+
+start_openocd:
+	openocd -f spike.cfg
+
+start_gdb:
+	riscv64-unknown-elf-gdb zstack.elf
+
 install:
 	cp zstack.img /mnt/c/Users/Z/
