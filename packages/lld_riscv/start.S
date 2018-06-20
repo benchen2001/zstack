@@ -7,7 +7,7 @@
 _start:
 	LA t0, trap_entry
 	CSRW mtvec, t0
-	LI sp, 0x80001000
+	LA sp, stack_top
 	J main
 
 trap_entry:
