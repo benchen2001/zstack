@@ -59,7 +59,6 @@ trap_entry:
 	CSRW mepc, t0
 
 	LD x1, 0 * REG(sp)
-	LD x2, 1 * REG(sp)
 	LD x3, 2 * REG(sp)
 	LD x4, 3 * REG(sp)
 	LD x5, 4 * REG(sp)
