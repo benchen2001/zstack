@@ -1,5 +1,4 @@
 
-# OS
 #define CONFIG_TASK_NUM		5
 #define CONFIG_EVENT_NUM	5
 #define CONFIG_OS_STACK_SIZE	(1024*5)
