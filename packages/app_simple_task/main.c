@@ -18,6 +18,7 @@ static void Task1(void)
 static void Task2(void)
 {
 	while (1) {
+		software_interrupt(0);
 	}
 }
 
