@@ -4,7 +4,6 @@
 static void Task0(void)
 {
 	while (1) {
-		printk("TASK0");
 		software_interrupt(0);
 	}
 }
@@ -12,7 +11,6 @@ static void Task0(void)
 static void Task1(void)
 {
 	while (1) {
-		printk("TASK1");
 		software_interrupt(0);
 	}
 }
@@ -20,15 +18,12 @@ static void Task1(void)
 static void Task2(void)
 {
 	while (1) {
-		printk("TASK2");
-		software_interrupt(0);
 	}
 }
 
 static void TaskIdle(void)
 {
 	while (1) {
-		printk("TASK2");
 		software_interrupt(0);
 	}
 }
