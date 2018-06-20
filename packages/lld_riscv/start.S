@@ -47,6 +47,7 @@ trap_entry:
 	SD x31, 30 * REG(sp)
 	// store pc to stack
 	CSRR t0, mepc
+	ADDI t0, t0, 4
 	SD t0, 31 * REG(sp)
 
 	// store sp to TCB and return next task's sp
