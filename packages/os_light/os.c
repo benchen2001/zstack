@@ -59,9 +59,9 @@ void kernel_init (void)
 	// init exception return context
 	for (i=0; i<TASK_SLOT_NUM; i++) {
 		core_exception_context_init(
-			(void *)tcb_array[i].sp,
-			(unsigned int)task_config_array[i].entry,
-			(unsigned int)task_delete
+			tcb_array[i].sp,
+			task_config_array[i].entry,
+			task_delete
 			);
 	}
 }
