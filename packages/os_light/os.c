@@ -134,7 +134,7 @@ void sleep (unsigned int seconds)
 	msleep(seconds * 1000);
 }
 
-unsigned int schedule (unsigned int sp)
+unsigned long long schedule (unsigned int sp)
 {
 	int i;
 	int previous_task;

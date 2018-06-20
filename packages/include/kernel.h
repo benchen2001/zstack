@@ -14,7 +14,7 @@ struct task_event {
 
 /* Load user config to initialise kernel objects */
 extern void kernel_init (void);
-extern unsigned int schedule (unsigned int sp);
+extern unsigned long long schedule (unsigned int sp);
 
 extern void sleep (unsigned int seconds);
 extern void msleep (unsigned int ms);
