@@ -1,10 +1,12 @@
 #include <printk.h>
 #include <kernel.h>
+#include <delay.h>
 
 static void Task0(void)
 {
 	while (1) {
 		printk("TASK0\n");
+		mdelay(100);
 		software_interrupt(0);
 	}
 }
@@ -13,6 +15,7 @@ static void Task1(void)
 {
 	while (1) {
 		printk("TASK1\n");
+		mdelay(100);
 		software_interrupt(0);
 	}
 }
@@ -21,6 +24,7 @@ static void Task2(void)
 {
 	while (1) {
 		printk("TASK2\n");
+		mdelay(100);
 		software_interrupt(0);
 	}
 }
@@ -29,6 +33,7 @@ static void TaskIdle(void)
 {
 	while (1) {
 		printk("TASK IDLE\n");
+		mdelay(100);
 		software_interrupt(0);
 	}
 }
