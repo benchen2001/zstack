@@ -1,8 +1,11 @@
 REPO = /home/jinfeng/zstack/packages
 
 include $(REPO)/lld_armv7m/basic.list
-
-OBJECTS += main.o
+include $(REPO)/lld_ti_uart/basic.list
+include $(REPO)/libmisc/basic.list
+include $(REPO)/libc/basic.list
+include $(REPO)/os_light/basic.list
+include $(REPO)/app_simple_task/basic.list
 
 #--------------------------------------------------------------------------------------------------
 CC = arm-none-eabi-gcc
@@ -10,7 +13,7 @@ LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 OBJDUMP = arm-none-eabi-objdump
 
-CFLAGS  = -c -mthumb -march=armv7-m -g -nostdinc -fno-builtin -Wall -I$(REPO)/include
+CFLAGS  = -c -mthumb -mcpu=cortex-m3 -g -nostdinc -fno-builtin -Wall -I$(REPO)/include -include config
 LDFLAGS = -T $(REPO)/board_lm3s811evb/layout.lds -nostdlib
 #--------------------------------------------------------------------------------------------------
 
@@ -18,6 +21,8 @@ all: zstack.elf
 
 zstack.elf: $(OBJECTS)
 	$(LD) $(LDFLAGS) -o $@ $^
+	$(OBJDUMP) -S $@ > zstack.dump
+	$(OBJDUMP) -t $@ > zstack.symbol
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
@@ -37,7 +42,11 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-i386 -monitor stdio zstack.img
+	@qemu-system-arm -monitor stdio zstack.elf
 
-copy:
-	cp zstack.img /mnt/c/Users/Z/
+start_qemu:
+	@qemu-system-arm -monitor stdio -kernel zstack.elf -s -S -machine lm3s811evb
+
+start_gdb:
+	@gdb-multiarch zstack.elf
+
