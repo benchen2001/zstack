@@ -11,7 +11,7 @@
     .section .vectors, "a", %progbits
 
 vector_table:
-    .word section_stack_end     /* => MSP */
+    .word stack_top     	/* => MSP */
     .word exception_reset       /* => PC  */
     .word exception_nmi
     .word exception_hard_fault

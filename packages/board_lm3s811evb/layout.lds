@@ -34,12 +34,12 @@ SECTIONS {
 
     .stack : {
         . = ALIGN(8);
-        section_stack_start = .;
+        stack_bottom = .;
 
-        . = . + CONFIG_STACK_SIZE;
+        . +=  CONFIG_STACK_SIZE;
 
         . = ALIGN(8);
-        section_stack_end = .;
+        stack_top = .;
     } > sram
 }
 
