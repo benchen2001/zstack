@@ -9,7 +9,7 @@ struct tss_item tss;
 void tss_init (void)
 {
 	// ring 0
-	tss.esp0 = 0x9000; // TODO
+	tss.esp0 = &section_stack_top;
 	tss.ss0  = SS_KERNEL_DATA;
 
 	// ring 3
