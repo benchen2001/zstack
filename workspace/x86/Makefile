@@ -3,11 +3,10 @@ REPO = /home/jinfeng/zstack/packages
 include $(REPO)/lld_x86/basic.list
 include $(REPO)/lld_intel_8259a/basic.list
 include $(REPO)/lld_intel_16550/basic.list
-include $(REPO)/lld_intel_pci/basic.list
 include $(REPO)/libmisc/basic.list
 include $(REPO)/libc/basic.list
-
-OBJECTS += main.o
+include $(REPO)/os_light/basic.list
+include $(REPO)/app_simple_task/basic.list
 
 #--------------------------------------------------------------------------------------------------
 CC = gcc
@@ -29,6 +28,7 @@ zstack.img: zstack.elf bootsector.bin
 
 zstack.elf: $(OBJECTS)
 	$(LD) $(LDFLAGS) -o $@ $^
+	$(OBJDUMP) -S $@ > zstack.dump
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
@@ -48,7 +48,7 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-i386 -monitor stdio zstack.img
+	@qemu-system-i386 -serial stdio zstack.img
 
-install:
-	cp zstack.img /mnt/c/Users/Z/
+start_qemu:
+	@qemu-system-i386 zstack.img -s -S
