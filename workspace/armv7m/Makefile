@@ -13,7 +13,7 @@ LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 OBJDUMP = arm-none-eabi-objdump
 
-CFLAGS  = -c -mthumb -mcpu=cortex-m3 -g -nostdinc -fno-builtin -Wall -I$(REPO)/include -include config
+CFLAGS  = -c -mthumb -mcpu=cortex-m3 -g -nostdinc -fno-builtin -Wall -I$(REPO)/include -include config -std=c99
 LDFLAGS = -T $(REPO)/board_lm3s811evb/layout.lds -nostdlib
 #--------------------------------------------------------------------------------------------------
 
@@ -42,10 +42,10 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-arm -monitor stdio zstack.elf
+	@qemu-system-arm -machine lm3s811evb -kernel zstack.elf
 
 start_qemu:
-	@qemu-system-arm -monitor stdio -kernel zstack.elf -s -S -machine lm3s811evb
+	@qemu-system-arm -machine lm3s811evb -nographic -kernel zstack.elf -s -S
 
 start_gdb:
 	@gdb-multiarch zstack.elf
