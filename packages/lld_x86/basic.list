@@ -5,3 +5,5 @@ OBJECTS += $(REPO)/lld_x86/gdt.o
 OBJECTS += $(REPO)/lld_x86/idt.o
 OBJECTS += $(REPO)/lld_x86/bss.o
 OBJECTS += $(REPO)/lld_x86/exception.o
+OBJECTS += $(REPO)/lld_x86/exception_context.o
+OBJECTS += $(REPO)/lld_x86/irq.o
