@@ -1,18 +1,16 @@
 #include "selector.h"
 
-	.extern idt_common_isr
-
-	.global irq_entry
+.global irq_entry
+.global exception_0
 
 .macro EXCEPTION number
 	.global exception_\number
 
 exception_\number:
 	push $\number
-	jmp idt_common_entry
+	jmp exception_entry
 .endm
 
-EXCEPTION 0
 EXCEPTION 1
 EXCEPTION 2
 EXCEPTION 3
@@ -45,17 +43,64 @@ EXCEPTION 29
 EXCEPTION 30
 EXCEPTION 31
 
-irq_entry:
-	pushl $32
-	jmp idt_common_entry
-
-idt_common_entry:
+exception_entry:
 	mov $SS_KERNEL_CODE, %ax
 	mov %ax, %ds
 	mov %ax, %es
 	mov %ax, %fs
 	mov %ax, %gs
-	call idt_common_isr
-	popl %eax
+	jmp .
+
+irq_entry:
+	mov $SS_KERNEL_CODE, %ax
+	mov %ax, %ds
+	mov %ax, %es
+	mov %ax, %fs
+	mov %ax, %gs
+	jmp .
+
+exception_0:
+	mov $SS_KERNEL_CODE, %ax
+	mov %ax, %ds
+	mov %ax, %es
+	mov %ax, %fs
+	mov %ax, %gs
+
+	/* move core_exception_context from core to task */
+	addl $(-4*5), %ebp
+
+	mov 0x0(%esp), %eax
+	mov %eax, 0x0(%ebp)
+	mov 0x4(%esp), %eax
+	mov %eax, 0x4(%ebp)
+	mov 0x8(%esp), %eax
+	mov %eax, 0x8(%ebp)
+	mov 0xc(%esp), %eax
+	mov %eax, 0xc(%ebp)
+	mov 0x10(%esp), %eax
+	mov %eax, 0x10(%ebp)
+
+	pushl %ebp
+	call schedule
+	mov %eax, %ebp
+
+	/* move core_exception_context from task to core */
+	mov 0x0(%ebp), %eax
+	mov %eax, 0x0(%esp)
+	mov 0x4(%ebp), %eax
+	mov %eax, 0x4(%esp)
+	mov 0x8(%ebp), %eax
+	mov %eax, 0x8(%esp)
+	mov 0xc(%ebp), %eax
+	mov %eax, 0xc(%esp)
+	mov 0x10(%ebp), %eax
+	mov %eax, 0x10(%esp)
+
+	addl $(4*5), %ebp
+
+	/* enable irq */
+	mov 0x8(%esp), %eax
+	orl $0x200, %eax
+	mov %eax, 0x8(%esp)
 	iret
 
