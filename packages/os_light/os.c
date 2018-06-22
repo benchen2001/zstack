@@ -26,7 +26,6 @@ void kernel_init (void)
 {
 	int i;
 	int sp;
-	int task_count = 0;
 	
 	// init stack
 	memset(os_stack, 0xCC, CONFIG_OS_STACK_SIZE);
@@ -35,16 +34,12 @@ void kernel_init (void)
 	
 	sp = os_stack_top;
 	
-	// determine the valid task size
-	for (i=0; i<CONFIG_TASK_NUM; i++) {
-		if (0 == task_config_array[i].stacksize) {
-			break;
-		}
-		task_count++;
-	}
-
 	// init TCB
 	for (i=0; i<CONFIG_TASK_NUM; i++) {
+		if (0 == task_config_array[i].stacksize) {
+			tcb_array[i].ready_link = 0;
+			continue;
+		}
 		tcb_array[i].sp = sp - core_exception_context_size;
 		tcb_array[i].ready_link = 1;
 		tcb_array[i].delay_link = 0;
@@ -176,3 +171,4 @@ unsigned long long schedule (unsigned int sp)
 	
 	return tcb_array[current_task].sp;
 }
+
