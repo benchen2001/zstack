@@ -8,73 +8,6 @@
 #include "exception.h"
 #include "x86.h"
 
-struct TCB {
-	uint32_t ss;
-	uint32_t esp;
-	uint32_t eflags;
-	uint32_t cs;
-	uint32_t eip;
-};
-void task_b_entry (void)
-{
-	while (1) {
-		printk("+");
-	}
-}
-struct TCB tasks[2] = 
-{
-	{
-	.ss = SS_TASK_INIT_DATA,
-	.esp = 0x5000,
-	.eflags = 0x206,
-	.cs = SS_TASK_INIT_CODE,
-	.eip = (uint32_t)task_b_entry
-	}
-};
-
-int curtask = 0;
-
-void idt_common_isr (int num)
-{
-	if (num >= 32) {
-		interrupt_controller_ack();
-	}
-
-	if (32 != num) {
-		printk("num = %d\n", num);
-		while (1);
-	}
-
-	printk(".");
-
-#if 1
-	// pop num first
-	__asm__ ("popl %eax");
-
-#if 1
-	if (curtask == 0) {
-		curtask = 1;
-		__asm__
-		(
-		"popl %eax;"
-		"popl %eax;"
-		"popl %eax;"
-		"popl %eax;"
-		"popl %eax;"
-
-		"pushl $0x23;"
-		"pushl $0x6000;"
-		"pushl $0x206;"
-		"pushl $0x1B;"
-		"pushl $0x1373;"
-		);
-	}
-#endif
-
-	__asm__ ("pushl %eax");
-#endif
-}
-
 struct idt_item interrupt_descriptor_table[256];
 
 /* size should minus 1, to avoid overflow */
@@ -138,12 +71,3 @@ void idt_init(void)
 
 	__asm__ ("lidt interrupt_descriptor_table_info");
 }
-
-void idt_dump (void)
-{
-	uint32_t *item = (uint32_t *)interrupt_descriptor_table;
-
-	printk("%08x %08x\n", item[1], item[0]);
-	printk("%08x %08x\n", item[3], item[2]);
-}
-
