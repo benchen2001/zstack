@@ -1,6 +1,7 @@
 REPO = /home/jinfeng/zstack/packages
 
 include $(REPO)/lld_armv7m/basic.list
+include $(REPO)/lld_arm_nvic/basic.list
 include $(REPO)/lld_ti_uart/basic.list
 include $(REPO)/libmisc/basic.list
 include $(REPO)/libc/basic.list
@@ -45,7 +46,7 @@ run:
 	@qemu-system-arm -machine lm3s811evb -kernel zstack.elf
 
 start_qemu:
-	@qemu-system-arm -machine lm3s811evb -nographic -kernel zstack.elf -s -S
+	@qemu-system-arm -machine lm3s811evb -kernel zstack.elf -s -S
 
 start_gdb:
 	@gdb-multiarch zstack.elf
