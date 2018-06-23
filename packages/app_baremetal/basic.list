@@ -1,0 +1,2 @@
+OBJECTS += $(REPO)/app_baremetal/main.o
+
