@@ -48,7 +48,7 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-i386 -serial stdio zstack.img
+	@qemu-system-i386 -nographic -monitor null -serial stdio zstack.img
 
 start_qemu:
 	@qemu-system-i386 zstack.img -s -S
