@@ -46,14 +46,26 @@ exception_reserved:
 
 	.thumb_func
 exception_svc:
+
+	/* store r4-r7 */
+	PUSH {R7}
+	PUSH {R6}
+	PUSH {R5}
+	PUSH {R4}
+
+	/* store r5-r11 in ARMv7A */
+
 	MOV r0, sp
 	BL schedule
 	MOV sp, r0
 
-	/* TODO machine treat r7 as bp, auto write to sp?
-	 * It seems to be a qemu's bug.
-	 */
-	MOV r7, r0
+	/* restore r4-r7 */
+	POP {R4}
+	POP {R5}
+	POP {R6}
+	POP {R7}
+
+	/* restore r5-r11 in ARMv7A */
 
 	LDR r0, =0xFFFFFFF9
 	BX r0

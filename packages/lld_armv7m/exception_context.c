@@ -1,6 +1,11 @@
 #include <core.h>
 
 struct core_exception_context {
+	uint32_t r4;
+	uint32_t r5;
+	uint32_t r6;
+	uint32_t r7;
+	/* r8-r11 in ARMv7A machine */
 	uint32_t r0;
 	uint32_t r1;
 	uint32_t r2;
