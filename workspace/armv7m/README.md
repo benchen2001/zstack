@@ -12,3 +12,8 @@
 2. install qemu-system-arm
 3. install gdb-multiarch or gdb-arm-none-eabi
 4. make; make run (qemu serial window)
+
+## Attention
+
+Need to restart qemu to reset CPU. Multiarch-GDB instruction si does not take effect when it do iret.
+
