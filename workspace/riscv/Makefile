@@ -83,6 +83,3 @@ start_openocd:
 
 start_gdb:
 	riscv64-unknown-elf-gdb zstack.elf
-
-install:
-	cp zstack.img /mnt/c/Users/Z/
