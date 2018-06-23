@@ -49,6 +49,12 @@ exception_svc:
 	MOV r0, sp
 	BL schedule
 	MOV sp, r0
+
+	/* TODO machine treat r7 as bp, auto write to sp?
+	 * It seems to be a qemu's bug.
+	 */
+	MOV r7, r0
+
 	LDR r0, =0xFFFFFFF9
 	BX r0
 
