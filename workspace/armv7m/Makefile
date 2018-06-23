@@ -43,7 +43,8 @@ clean:
 	@rm -f zstack.* $(OBJECTS) $(OBJECTS:.o=.d)
 
 run:
-	@qemu-system-arm -machine lm3s811evb -kernel zstack.elf
+	@qemu-system-arm -nographic -monitor null -serial stdio \
+		-machine lm3s811evb -kernel zstack.elf
 
 start_qemu:
 	@qemu-system-arm -machine lm3s811evb -kernel zstack.elf -s -S
