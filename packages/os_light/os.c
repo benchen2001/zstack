@@ -25,7 +25,7 @@ static void task_delete(void)
 void kernel_init (void)
 {
 	int i;
-	int sp;
+	uint32_t sp;
 	
 	// init stack
 	memset(os_stack, 0xCC, CONFIG_OS_STACK_SIZE);
