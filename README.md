@@ -2,12 +2,14 @@
 
 ## Feature
 
-* support armv7m, riscv simulate
+* contain a static os, now port to armv7m, riscv and x86
+* prefer to use simulator, which give us a quick start
 
 ## Design
 
 * package export symbols, with different set, distinguish by postfix.
 * release version: [global design].[package count].[commit count]
+* there exist a store which has lots of packages, with unique ID, maintained by many developers.
 
 ## Quick Start
 
