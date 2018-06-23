@@ -49,7 +49,7 @@ exception_entry:
 	mov %ax, %es
 	mov %ax, %fs
 	mov %ax, %gs
-	jmp .
+	jmp exception_isr
 
 irq_entry:
 	mov $SS_KERNEL_CODE, %ax
