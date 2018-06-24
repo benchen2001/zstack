@@ -33,7 +33,7 @@ static int skip_atoi(const char **s)
 #define SMALL	64		/* use 'abcdef' instead of 'ABCDEF' */
 
 static char tmp[36];
-static char * number(char * str, int num, int base, int size, int precision ,int type)
+static char * number(char * str, unsigned int num, int base, int size, int precision ,int type)
 {
 	char c,sign;
 	const char *digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
