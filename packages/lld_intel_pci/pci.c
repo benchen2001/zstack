@@ -153,14 +153,16 @@ struct pci_vendor_map {
 
 void pci_scan (void)
 {
-	uint32_t id;
-	uint32_t class;
+	uint32_t id = 0;
+	uint32_t class = 0;
+	uint32_t bar0 = 0;
 
 	for (int bus=0; bus<256; bus++) {
-		for (int slot=0; slot<32; slot++) {
+		for (int slot=0; slot<16; slot++) {
 			for (int func=0; func<8; func++) {
 				id = pci_config_read(bus, slot, func, 0);
 				class = pci_config_read(bus, slot, func, 2);
+				bar0 = pci_config_read(bus, slot, func, 3);
 				if (0xFFFFFFFF != id) {
 					printk(	"bus %d slot %d func %d\n"
 						"\tvendor: %x device: %x\n"
@@ -171,6 +173,7 @@ void pci_scan (void)
 						class >> 24,
 						(class >> 16) & 0xFF
 						);
+					printk("\tBAR0: %x\n", bar0);
 				}
 			}
 		}
