@@ -72,6 +72,25 @@ uint32_t pci_config_read (int bus, int slot, int func, int reg)
 	return data;
 }
 
+void pci_config_write (int bus, int slot, int func, int reg, uint32_t value)
+{
+	struct pci_addr addr = {
+		.enable = 1,
+		.bus = bus,
+		.slot = slot,
+		.func = func,
+		.reg = reg,
+		.fixed = 0
+	};
+
+	uint32_t *addrp = (uint32_t *)&addr;
+
+	out(*addrp, CONFIG_ADDR);
+	out(value, CONFIG_DATA);
+
+	return 0;
+}
+
 int pci_config_read_vendor_id (int bus, int slot, int func)
 {
 	uint32_t data = pci_config_read(bus, slot, func, 0);
@@ -156,13 +175,13 @@ void pci_scan (void)
 	uint32_t id = 0;
 	uint32_t class = 0;
 	uint32_t bar0 = 0;
+	uint32_t interrupt = 0;
 
 	for (int bus=0; bus<256; bus++) {
 		for (int slot=0; slot<16; slot++) {
 			for (int func=0; func<8; func++) {
 				id = pci_config_read(bus, slot, func, 0);
 				class = pci_config_read(bus, slot, func, 2);
-				bar0 = pci_config_read(bus, slot, func, 3);
 				if (0xFFFFFFFF != id) {
 					printk(	"bus %d slot %d func %d\n"
 						"\tvendor: %x device: %x\n"
@@ -173,7 +192,11 @@ void pci_scan (void)
 						class >> 24,
 						(class >> 16) & 0xFF
 						);
+					bar0 = pci_config_read(bus, slot, func, 4);
 					printk("\tBAR0: %x\n", bar0);
+					interrupt = pci_config_read(bus, slot, func, 0xF);
+					printk("\tINTERRUPT PIN(INTA/B/C/D): %x\n", (interrupt>>8)&0xFF);
+					printk("\tINTERRUPT LINE: %d\n", interrupt & 0xFF);
 				}
 			}
 		}
