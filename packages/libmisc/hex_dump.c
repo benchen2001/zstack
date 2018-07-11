@@ -5,10 +5,13 @@
 void hex_dump(uint8_t *buffer, uint32_t length)
 {
         int i;
+        
+        length = (length / 16 + 1) * 16;
+        
         for (i=0; i<length/16; i++) {
                 printk("%08x : %02x %02x %02x %02x %02x %02x %02x %02x | "
                               "%02x %02x %02x %02x %02x %02x %02x %02x\n",
-                        i*16,
+                        buffer + i*16,
                         buffer[i*16+0],
                         buffer[i*16+1],
                         buffer[i*16+2],
