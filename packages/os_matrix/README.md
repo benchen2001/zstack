@@ -32,3 +32,9 @@ Multi-master are supported for load and store tasks/data from everywhre.
 
    Graphic Card or FPGA?
 
+## Reference
+
+1. CUDA coding
+2. Multicore coding
+3. Parallel coding
+
