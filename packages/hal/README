@@ -1,0 +1,4 @@
+# HAL
+
+We use ZSTACK OS APIs, which is a wrapper of the OS implementations.
+
