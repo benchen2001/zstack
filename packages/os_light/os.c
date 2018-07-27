@@ -14,9 +14,8 @@ unsigned int		os_stack_top;
 unsigned int		os_stack_bottom;
 
 struct tcb		tcb_array[CONFIG_TASK_NUM];
-struct task_event	event_array[CONFIG_EVENT_NUM];
 
-static void task_delete(void)
+static void task_finish(void)
 {
 	tcb_array[current_task].ready_link = 0;
 	software_interrupt(0);
@@ -54,78 +53,10 @@ void kernel_init (void)
 	for (i=0; i<CONFIG_TASK_NUM; i++) {
 		core_exception_context_init(
 			tcb_array[i].sp,
-			task_config_array[i].entry,
-			task_delete
+			(uint32_t)task_config_array[i].entry,
+			(uint32_t)task_finish
 			);
 	}
-}
-
-int sem_post (int id)
-{
-	int i;
-	
-	interrupt_disable();
-	
-	if (0 == event_array[id].count) {
-		for (i=0; i<CONFIG_TASK_NUM; i++) {
-			if (tcb_array[i].event_link) {
-				tcb_array[i].ready_link = 1;
-				tcb_array[i].event_link = 0;
-				tcb_array[i].event_id = 0;
-				break;
-			}
-		}
-		
-		// Don't increase it until there are no tasks block on the link
-		// TODO: count may grow very large, the max number is?
-		if (CONFIG_TASK_NUM == i) {
-			event_array[id].count++;
-		}
-	}
-	
-	interrupt_enable();
-
-	software_interrupt(0);
-
-	// NEVER GOES HERE	
-	return 0;
-}
-
-int sem_take (int id)
-{
-	interrupt_disable();
-	
-	if (0 == event_array[id].count) {
-		tcb_array[current_task].ready_link = 0;
-		tcb_array[current_task].event_link = 1;
-		tcb_array[current_task].event_id = id;
-	}
-	else {
-		event_array[id].count--;
-	}
-	
-	interrupt_enable();
-
-	software_interrupt(0);
-
-	// NEVER GOES HERE
-	return 0;
-}
-
-void msleep (unsigned int ms)
-{
-	interrupt_disable();
-	tcb_array[current_task].ready_link = 0;
-	tcb_array[current_task].delay_link = 1;
-	tcb_array[current_task].resume_timestamp = os_tick + os_freq * ms / 1000;
-	interrupt_enable();
-	
-	software_interrupt(0);
-}
-
-void sleep (unsigned int seconds)
-{
-	msleep(seconds * 1000);
 }
 
 unsigned long long schedule (unsigned int sp)

@@ -1,6 +1,7 @@
 
 #define CONFIG_TASK_NUM			5
 #define CONFIG_EVENT_NUM		5
+#define CONFIG_MUTEX_NUM		5
 #define CONFIG_OS_STACK_SIZE		(1024*5)
 #define CONFIG_OS_FREQ			100
 #define CONFIG_TASK_IDLE		0

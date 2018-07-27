@@ -20,7 +20,7 @@ int core_exception_context_size = sizeof(struct core_exception_context);
 
 void core_exception_context_init(uint32_t base, uint32_t entry, uint32_t end)
 {
-	struct core_exception_context *context = base;
+	struct core_exception_context *context = (void *)base;
 
 	context->pc = entry;
 	context->lr = end;

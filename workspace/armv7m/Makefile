@@ -1,5 +1,3 @@
-REPO = /home/jinfeng/zstack/packages
-
 include $(REPO)/lld_armv7m/basic.list
 include $(REPO)/lld_arm_nvic/basic.list
 include $(REPO)/lld_ti_uart/basic.list

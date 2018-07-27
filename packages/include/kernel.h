@@ -8,7 +8,10 @@ struct task_config {
 };
 
 struct task_event {
-	int type;
+	int count;
+};
+
+struct mutex {
 	int count;
 };
 
@@ -21,5 +24,8 @@ extern void msleep (unsigned int ms);
 
 extern int sem_post (int id);
 extern int sem_take (int id);
+
+extern int mutex_unlock (int id);
+extern int mutex_lock (int id);
 
 #endif

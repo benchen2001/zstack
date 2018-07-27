@@ -1,12 +1,14 @@
 #include <printk.h>
 #include <kernel.h>
 #include <delay.h>
+#include <core.h>
+#include <lld/interrupt_controller.h>
 
 static void Task0(void)
 {
 	while (1) {
 		printk("TASK0\n");
-		mdelay(100);
+		//mdelay(100);
 		software_interrupt(0);
 	}
 }
@@ -15,7 +17,7 @@ static void Task1(void)
 {
 	while (1) {
 		printk("TASK1\n");
-		mdelay(100);
+		//mdelay(100);
 		software_interrupt(0);
 	}
 }
@@ -24,7 +26,7 @@ static void Task2(void)
 {
 	while (1) {
 		printk("TASK2\n");
-		mdelay(100);
+		//mdelay(100);
 		software_interrupt(0);
 	}
 }
@@ -33,7 +35,7 @@ static void Task3(void)
 {
 	while (1) {
 		printk("TASK3\n");
-		mdelay(100);
+		//mdelay(100);
 		software_interrupt(0);
 	}
 }

@@ -1,5 +1,3 @@
-REPO = /home/jinfeng/zstack/packages
-
 LINK_SCRIPT = $(REPO)/board_riscv_spike/layout.lds 
 
 include $(REPO)/lld_riscv/basic.list

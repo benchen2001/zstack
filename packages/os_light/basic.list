@@ -1,1 +1,4 @@
 OBJECTS += $(REPO)/os_light/os.o
+OBJECTS += $(REPO)/os_light/sem.o
+OBJECTS += $(REPO)/os_light/mutex.o
+OBJECTS += $(REPO)/os_light/sleep.o
