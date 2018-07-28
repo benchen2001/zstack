@@ -35,7 +35,7 @@ int mutex_unlock (int id)
 	}
 
 	/* resume the priority */
-	task_array[mutex_owner].priority = mutex_array[id].priority;
+	tcb_array[mutex_owner].priority = mutex_array[id].priority;
 	
 	interrupt_enable();
 
