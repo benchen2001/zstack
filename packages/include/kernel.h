@@ -14,6 +14,8 @@ struct task_event {
 
 struct mutex {
 	int count;
+	int owner;
+	int priority; /* for priority resume */
 };
 
 /* Load user config to initialise kernel objects */

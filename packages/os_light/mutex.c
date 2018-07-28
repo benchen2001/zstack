@@ -9,6 +9,7 @@ struct mutex mutex_array[CONFIG_MUTEX_NUM];
 int mutex_unlock (int id)
 {
 	int i;
+	int mutex_owner;
 	
 	interrupt_disable();
 	
@@ -19,6 +20,8 @@ int mutex_unlock (int id)
 				tcb_array[i].ready_link = 1;
 				tcb_array[i].event_link = 0;
 				tcb_array[i].event_id = 0;
+
+				mutex_owner = i;
 				break;
 			}
 		}
@@ -26,9 +29,13 @@ int mutex_unlock (int id)
 		// Don't increase it until there are no tasks block on the link
 		// TODO: count may grow very large, the max number is?
 		if (CONFIG_TASK_NUM == i) {
-			mutex_array[id].count++;
+			interrupt_disable(); // TODO
+			return -1;
 		}
 	}
+
+	/* resume the priority */
+	task_array[mutex_owner].priority = mutex_array[id].priority;
 	
 	interrupt_enable();
 
@@ -40,15 +47,37 @@ int mutex_unlock (int id)
 
 int mutex_lock (int id)
 {
+	int mutex_owner;
+
 	interrupt_disable();
+
+	/* if any task hold the lock */
+	if (0 == mutex_array[id].owner) { // TODO 0 is IDLE task
+		mutex_array[id].owner == current_task;
+	}
 	
+	mutex_owner = mutex_array[id].owner;
+
+	/* check if the same task, eg. task lock twice */
+	if (mutex_owner == current_task) {
+		interrupt_enable(); // attention
+		return -1;
+	}
+
 	if (0 == mutex_array[id].count) {
+
+		/* priority reverse check */
+		if (tcb_array[mutex_owner].priority < tcb_array[current_task].priority) {
+			tcb_array[mutex_owner].priority = tcb_array[current_task].priority + 1;
+		}
+
 		tcb_array[current_task].ready_link = 0;
 		tcb_array[current_task].event_link = 1;
 		tcb_array[current_task].event_id = id;
 	}
 	else {
 		mutex_array[id].count--;
+		mutex_array[id].owner = current_task;
 		if (mutex_array[id].count < 0) {
 			mutex_array[id].count = 0;
 		}
