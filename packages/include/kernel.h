@@ -18,6 +18,17 @@ struct mutex {
 	int priority; /* for priority resume */
 };
 
+struct mail {
+	uint8_t payload[CONFIG_MAIL_SIZE];
+}
+
+struct mailbox {
+	struct msg queue[CONFIG_MAILBOX_SIZE];	/* if full, block send task, if empty, block recv task */
+	int num;				/* the number of mail in box */
+	int slot;				/* current slot mail to be put in box */
+	int ready;				/* current ready mail to be token, which maybe the highest priority */
+};
+
 /* Load user config to initialise kernel objects */
 extern void kernel_init (void);
 extern unsigned long long schedule (unsigned int sp);

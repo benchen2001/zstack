@@ -7,8 +7,14 @@ struct tcb {
 	unsigned int ready_link;
 	unsigned int delay_link;
 	unsigned int resume_timestamp;
-	unsigned int event_link;
-	unsigned int event_id; /* semaphore */
+	unsigned int event_link;	/* TODO merge */
+	unsigned int event_id;
+	unsigned int mutex_link;	/* TODO merge the link with type */
+	unsigned int mutex_id;
+	unsigned int mailbox_link;	/* TODO merge the link with type */
+	unsigned int mailbox_id;
+	unsigned int rwlock_link;	/* TODO merge */
+	unsigned int rwlock_id;
 };
 
 extern unsigned int		system_freq;
