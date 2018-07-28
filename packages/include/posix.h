@@ -7,6 +7,4 @@
 
 typedef uint32_t pid_t;
 
-#include <posix/signal.h>
-
 #endif

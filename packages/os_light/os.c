@@ -15,6 +15,8 @@ unsigned int		os_stack_bottom;
 
 struct tcb		tcb_array[CONFIG_TASK_NUM];
 
+scheduler_hook		scheduler_hook_array[CONFIG_SCHED_HOOK_NUMBER];
+
 static void task_finish(void)
 {
 	tcb_array[current_task].ready_link = 0;
@@ -72,6 +74,13 @@ unsigned long long schedule (unsigned int sp)
 	/* If current task is invalid, there is no space to store its sp */
 	if (-1 != current_task) {
 		tcb_array[current_task].sp = sp;
+	}
+
+	/* check hook first */
+	for (i=0; i<CONFIG_SCHED_HOOK_NUMBER; i++) {
+		if (scheduler_hook_array[i]) {
+			scheduler_hook_array[i]();
+		}
 	}
 	
 	// Check Delay List: sleep
