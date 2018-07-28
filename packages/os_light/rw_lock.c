@@ -8,39 +8,7 @@
 
 #include "os.h"
 
-struct task_event	event_array[CONFIG_EVENT_NUM];
-
-int rwlock_unlock (int id)
-{
-	int i;
-	
-	interrupt_disable();
-	
-	if (0 == event_array[id].count) {
-		for (i=0; i<CONFIG_TASK_NUM; i++) {
-			if (tcb_array[i].event_link) {
-				tcb_array[i].ready_link = 1;
-				tcb_array[i].event_link = 0;
-				tcb_array[i].event_id = 0;
-
-				/* wake up only one task */
-				break;
-			}
-		}
-	}
-	
-	/* if no task pending on it */
-	if (CONFIG_TASK_NUM == i) {
-		event_array[id].count++;
-	}
-
-	interrupt_enable();
-
-	software_interrupt(0);
-
-	// NEVER GOES HERE	
-	return 0;
-}
+struct rwlock	rwlock_array[CONFIG_RWLOCK_NUM];
 
 /*
  * put the readers into queue, only one can take the read sem, the other readers wait out of the door
