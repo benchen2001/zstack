@@ -3,6 +3,7 @@
 
 struct tcb {
 	unsigned int sp;
+	unsigned int priority;
 	unsigned int ready_link;
 	unsigned int delay_link;
 	unsigned int resume_timestamp;

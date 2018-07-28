@@ -4,6 +4,7 @@
 // There is no task_init or task_create
 struct task_config {
 	void (*entry)(void);
+	unsigned int priority;
 	int stacksize;
 };
 

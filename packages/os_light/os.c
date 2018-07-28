@@ -40,6 +40,7 @@ void kernel_init (void)
 			continue;
 		}
 		tcb_array[i].sp = sp - core_exception_context_size;
+		tcb_array[i].priority = task_config_array[i].priority;
 		tcb_array[i].ready_link = 1;
 		tcb_array[i].delay_link = 0;
 		tcb_array[i].resume_timestamp = 0;
@@ -63,6 +64,8 @@ unsigned long long schedule (unsigned int sp)
 {
 	int i;
 	int previous_task;
+	int high_priority = -1;
+	int high_priority_task;
 	
 	interrupt_disable();
 	
@@ -71,7 +74,7 @@ unsigned long long schedule (unsigned int sp)
 		tcb_array[current_task].sp = sp;
 	}
 	
-	// Check Delay List
+	// Check Delay List: sleep
 	for (i=0; i<CONFIG_TASK_NUM; i++) {
 		if (tcb_array[i].delay_link && (os_tick >= tcb_array[i].resume_timestamp)) {
 			tcb_array[i].delay_link = 0;
@@ -88,9 +91,15 @@ unsigned long long schedule (unsigned int sp)
 			continue;
 		}
 		if (tcb_array[i % CONFIG_TASK_NUM].ready_link) {
-				current_task = i % CONFIG_TASK_NUM;
-				break;
+				if (tcb_array[i % CONFIG_TASK_NUM].priority > high_priority) {
+					high_priority = tcb_array[i % CONFIG_TASK_NUM].priority;
+					high_priority_task = i % CONFIG_TASK_NUM;
+				}
 		}
+	}
+
+	if (0 != high_priority) {
+		current_task = high_priority_task;
 	}
 
 	/* If there is no ready task, select IDLE task */
