@@ -32,6 +32,8 @@ static void TaskIdle(void)
 	while (1);
 }
 
+extern int pthread_task_base = 3;
+
 struct task_config task_config_array[CONFIG_TASK_NUM] = {
 	{ TaskIdle,		1024 },
 	{ Task0,		1024 },

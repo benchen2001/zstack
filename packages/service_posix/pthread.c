@@ -3,6 +3,12 @@
 
 #include "pthread.h"
 
+// TODO
+exter int current_task;
+
+int pthread_task_base;
+int pthread_current_task;
+
 struct pthread pthread_array[CONFIG_PTHREAD_NUMBER];
 
 /*
@@ -20,6 +26,10 @@ void pthread_scheduler_hook(void)
 {
 	int thread;
 	int signal;
+
+	if (current_task - pthread_task_base) {
+		pthread_current_task = current_task - pthread_task_base;
+	}
 
 	// TODO need more
 	for (thread=0; thread<CONFIG_PTHREAD_NUMBER; thread++) {
