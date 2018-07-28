@@ -10,4 +10,7 @@ extern void software_interrupt (int num);
 extern int core_exception_context_size;
 extern void core_exception_context_init (uint32_t, uint32_t, uint32_t);
 
+#define irq_lock	interrupt_enable
+#define irq_unlock	interrupt_disable
+
 #endif

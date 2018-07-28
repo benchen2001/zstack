@@ -1,0 +1,1 @@
+OBJECTS += $(REPO)/service_posix/pthread.o
